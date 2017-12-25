@@ -1,5 +1,6 @@
 # GoGPAT (Go GitLab Personal Access Token)
 [![Build Status](https://travis-ci.org/solidnerd/gogpat.svg?branch=master)](https://travis-ci.org/solidnerd/gogpat)
+
 GoGPAT helps you to create personal access token via cli.
 
 ## Getting Started
