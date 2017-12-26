@@ -9,7 +9,7 @@ do
   sleep 10
 done
 popd 
-go test -v ${PKG_LIST}
+go test -v -covermode=count -coverprofile=profile.cov -timeout=1200s ${PKG_LIST}
 pushd ci
 docker-compose down -v
 popd
