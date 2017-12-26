@@ -7,6 +7,8 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
+  - go get github.com/mattn/goveralls
 
 script:
   - make ci
+  - goveralls -coverprofile=profile.cov -service=travis-ci
