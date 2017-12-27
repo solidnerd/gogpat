@@ -52,7 +52,7 @@ OPTIONS:
 
 * **Niclas Mietz** - *Initial work* - [solidnerd](https://github.com/solidnerd)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/solidnerd/gogpat/contributors) who participated in this project.
 
 ## License
 
