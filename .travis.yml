@@ -2,6 +2,17 @@ sudo: required
 language: go
 services:
   - docker
+go:
+  - 1.8.5
+  - 1.9.2
+  - tip
+os:
+  - linux
+  - osx
+matrix:
+  allow_failures:
+    - go: tip
+  fast_finish: true
 
 before_install:
   - curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` > docker-compose
