@@ -24,28 +24,28 @@ func TestExpiryWithEmptyDate(t *testing.T) {
 func TestExpiryWithWrongDateAtYear(t *testing.T) {
 	date, err := addExpiry(url.Values{}, "201-11-01")
 	assert.NotNil(t, err)
-	assert.Equal(t, errors.New("Year is to short"), err)
+	assert.Equal(t, errors.New("Year is too short"), err)
 	assert.Empty(t, date)
 }
 
 func TestExpiryWithWrongDateAtMonth(t *testing.T) {
 	date, err := addExpiry(url.Values{}, "2016-1-01")
 	assert.NotNil(t, err)
-	assert.Equal(t, errors.New("Month is to short needs to be with zero digest"), err)
+	assert.Equal(t, errors.New("Month is too short needs to be with zero digest"), err)
 	assert.Empty(t, date)
 }
 
 func TestExpiryWithWrongDateAtDay(t *testing.T) {
 	date, err := addExpiry(url.Values{}, "2016-11-1")
 	assert.NotNil(t, err)
-	assert.Equal(t, errors.New("Day is to short needs to be with zero digest"), err)
+	assert.Equal(t, errors.New("Day is too short needs to be with zero digest"), err)
 	assert.Empty(t, date)
 }
 
 func TestExpiryWithWrongDateFormat(t *testing.T) {
 	date, err := addExpiry(url.Values{}, "2016/11/01")
 	assert.NotNil(t, err)
-	assert.Equal(t, errors.New("Date is to short it should be formatted like this 2017-12-03"), err)
+	assert.Equal(t, errors.New("Date is too short it should be formatted like this 2017-12-03"), err)
 	assert.Empty(t, date)
 }
 
