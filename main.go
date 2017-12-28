@@ -12,7 +12,7 @@ import (
 // VERSION indicates which version of the binary is running.
 var VERSION string
 
-const gitlabDefaulURL = "https://gitlab.com"
+const gitlabDefaultURL = "https://gitlab.com"
 
 // preload initializes any global options and configuration
 // before the main or sub commands are run.
@@ -91,7 +91,7 @@ func main() {
 func create(c *cli.Context) {
 	url := c.Args().Get(0)
 	if url == "" {
-		url = gitlabDefaulURL
+		url = gitlabDefaultURL
 	}
 	user := c.String("user")
 	if user == "" {

@@ -14,7 +14,7 @@ import (
 	logrus "github.com/sirupsen/logrus"
 )
 
-const gitlabSiginPath = "/users/sign_in"
+const gitlabSignInPath = "/users/sign_in"
 const gitlabPersonalAccessTokenURLPath = "/profile/personal_access_tokens"
 
 // GitLabTokenRequest describes the token Request
@@ -38,7 +38,7 @@ func CreateToken(gr GitLabTokenRequest) (string, error) {
 		Jar:     jar,
 	}
 
-	loginURL, err := url.Parse(gr.URL + gitlabSiginPath)
+	loginURL, err := url.Parse(gr.URL + gitlabSignInPath)
 
 	if err != nil {
 		return "", err
@@ -66,7 +66,7 @@ func CreateToken(gr GitLabTokenRequest) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	token, err := findPersonaAccessToken(responseBody)
+	token, err := findPersonalAccessToken(responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -121,18 +121,18 @@ func addExpiry(values url.Values, date string) (url.Values, error) {
 	}
 	dateparts := strings.Split(date, "-")
 	if len(dateparts) < 3 {
-		return nil, errors.New("Date is to short it should be formatted like this 2017-12-03")
+		return nil, errors.New("Date is too short it should be formatted like this 2017-12-03")
 	}
 
 	if len(dateparts[0]) < 4 {
-		return nil, errors.New("Year is to short")
+		return nil, errors.New("Year is too short")
 	}
 
 	if len(dateparts[1]) < 2 {
-		return nil, errors.New("Month is to short needs to be with zero digest")
+		return nil, errors.New("Month is too short needs to be with zero digest")
 	}
 	if len(dateparts[2]) < 2 {
-		return nil, errors.New("Day is to short needs to be with zero digest")
+		return nil, errors.New("Day is too short needs to be with zero digest")
 	}
 	values.Add("personal_access_token[expires_at]", date)
 	return values, nil
@@ -154,7 +154,7 @@ func findCSRFToken(htmlBody string) map[string]string {
 	return m
 }
 
-func findPersonaAccessToken(htmlBody string) (string, error) {
+func findPersonalAccessToken(htmlBody string) (string, error) {
 	doc := soup.HTMLParse(htmlBody)
 	found := doc.Find("input", "id", "created-personal-access-token")
 	if found.Pointer == nil {
