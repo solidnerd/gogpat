@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  build:
+    working_directory: /go/src/github.com/solidnerd/gogpat
+    docker:
+      - image: circleci/golang:1.10
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-pkg-cache
+      - run: make ci
+      - save_cache:
+          key: v1-pkg-cache
+          paths:
+          - ~/.cache/go-build
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+    - build
