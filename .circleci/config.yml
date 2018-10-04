@@ -9,6 +9,7 @@ jobs:
       - restore_cache:
           keys:
           - v1-pkg-cache
+      - setup_remote_docker
       - run: make ci
       - save_cache:
           key: v1-pkg-cache
