@@ -7,6 +7,8 @@ jobs:
       - restore_cache:
           keys:
           - v1-pkg-cache
+      - run: ci/prepare.sh
+      - run: cd $GOPATH/src/${CIRCLE_REPOSITORY_URL#https://}
       - run: make ci
       - save_cache:
           key: v1-pkg-cache
