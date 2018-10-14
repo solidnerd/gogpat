@@ -2,13 +2,12 @@ version: 2
 jobs:
   build:
     machine: true
+    working_directory: ~/go/src/github.com/solidnerd/gogpat
     steps:
       - checkout
       - restore_cache:
           keys:
           - v1-pkg-cache
-      - run: ci/prepare.sh
-      - run: cd $GOPATH/src/${CIRCLE_REPOSITORY_URL#https://}
       - run: make ci
       - save_cache:
           key: v1-pkg-cache
