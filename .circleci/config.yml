@@ -8,7 +8,7 @@ jobs:
       - restore_cache:
           keys:
           - v1-pkg-cache
-      - run: ci/test.sh $(go list ... | grep -v /vendor/)
+      - run: ci/test.sh $(go list ./... | grep -v vendor)
       - save_cache:
           key: v1-pkg-cache
           paths:
