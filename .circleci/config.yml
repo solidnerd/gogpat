@@ -1,16 +1,15 @@
 version: 2
 jobs:
   build:
-    working_directory: /go/src/github.com/solidnerd/gogpat
-    docker:
-      - image: circleci/golang:1.10
+    machine: true
     steps:
       - checkout
       - restore_cache:
           keys:
           - v1-pkg-cache
-      - setup_remote_docker
-      - run: make ci
+      - run: ls -alh 
+      - run: pwd
+      - run: ci/test.sh $(go list ./... | grep -v vendor)
       - save_cache:
           key: v1-pkg-cache
           paths:
