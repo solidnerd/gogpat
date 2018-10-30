@@ -2,14 +2,13 @@ version: 2
 jobs:
   build:
     machine: true
-    working_directory: ~/go/src/github.com/solidnerd/gogpat
+    working_directory: /go/src/github.com/solidnerd/gogpat
     steps:
       - checkout
       - restore_cache:
           keys:
           - v1-pkg-cache
-      - run: ln -sn $CIRCLE_WORKING_DIRECTORY ~/go/src/github.com/solidnerd/gogpat
-      - run: ci/test.sh $(go list . | grep -v vendor)
+      - run: ci/test.sh $(go list ./... | grep -v vendor)
       - save_cache:
           key: v1-pkg-cache
           paths:
