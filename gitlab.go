@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 
@@ -87,11 +88,22 @@ func visitFirst(u *url.URL, client *http.Client) (htmlBody string, err error) {
 	return string(body), nil
 }
 
+func isTwoFactorAuthenticationEnabled(hmtlBody string) bool {
+	doc := soup.HTMLParse(hmtlBody)
+	found := doc.Find("label", "name", "otp_attempt")
+	if found.Pointer == nil {
+		return false
+	}
+	return true
+}
+
 func login(u *url.URL, gr GitLabTokenRequest, client *http.Client, values url.Values) (htmlBody string) {
 	values.Add("user[login]", gr.Username)
 	values.Add("user[password]", gr.Password)
 	values.Add("user[remember_me]", "0")
 	values.Add("utf8", "✓")
+	logrus.Debugln("URL Values Login: %s", values)
+	logrus.Debugln("URL Values Login Envoded: %s", values.Encode())
 	resp, err := client.PostForm(u.String(), values)
 	if err != nil {
 		logrus.Errorf("%v", err)
@@ -99,6 +111,28 @@ func login(u *url.URL, gr GitLabTokenRequest, client *http.Client, values url.Va
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
+	if isTwoFactorAuthenticationEnabled(string(body)) {
+		logrus.Infoln("Found Two Factor Authentication")
+		var ot int
+		logrus.Infoln("Please Provide a valid OTP Token to login: ")
+		_, err := fmt.Scanf("%d", &ot)
+		if err != nil {
+			logrus.Errorf("%v", err)
+		}
+		values = url.Values{}
+		values = getCSRFTokenFromBody(string(body), values)
+		values.Add("user[otp_attempt]", strconv.Itoa(ot))
+		values.Add("user[remember_me]", "0")
+		values.Add("utf8", "✓")
+		logrus.Debugln("URL Values Two Factor: %s", values)
+		logrus.Debugln("URL Values Two Factor Encoded: %s", values.Encode())
+		resp, err := client.PostForm(u.String(), values)
+		if err != nil {
+			logrus.Errorf("%v", err)
+		}
+		defer resp.Body.Close()
+		body, err = ioutil.ReadAll(resp.Body)
+	}
 	return string(body)
 }
 
