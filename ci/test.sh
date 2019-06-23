@@ -5,7 +5,7 @@ PKG_LIST=$1
 versions=( \
   10.2.5 \
   10.8.4 \
-  11.0.2 \
+  11.0.4 \
 )
 
 for version in "${versions[@]}"; do
